@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vasu Lingamallu - Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: -1; 
+            opacity: 0.65;
+            filter: grayscale(100%) contrast(1.2); 
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100vh;
+            object-fit: contain;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 230, 0, 0.6);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #ffe600;
+            text-shadow: 0 0 15px rgba(255, 230, 0, 0.8);
+        }
+
+        /* Portfolio Sections */
+        .section {
+            min-height: 110vh; /* Reduced slightly to accommodate 7 sections over 300 frames smoothly */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            position: relative;
+            z-index: 1;
+            box-sizing: border-box;
+        }
+
+        .align-left {
+            align-items: flex-start;
+            text-align: left;
+        }
+        
+        .align-right {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .content-block {
+            max-width: 440px; 
+            background: rgba(5, 5, 5, 0.5); 
+            padding: 40px;
+            border-radius: 12px;
+            backdrop-filter: blur(6px); 
+            border: 1px solid rgba(255, 230, 0, 0.4); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 15px rgba(255, 230, 0, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .content-block:hover {
+            border-color: rgba(255, 230, 0, 0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 25px rgba(255, 230, 0, 0.2);
+        }
+
+        .clear-block {
+            max-width: 500px;
+            padding: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: #fff;
+            color: #000;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin: 0 0 20px 0;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            color: #ffe600;
+            text-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin: 0 0 10px 0;
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+            color: #ddd;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 30px;
+            font-size: 1rem;
+            color: #000;
+            background: #ffe600;
+            border: 2px solid #ffe600;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: #ffe600;
+            box-shadow: 0 0 25px rgba(255, 230, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Projects List */
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .project-item {
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.6);
+            border-left: 3px solid #ffe600;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+
+        .project-item:hover {
+            background: rgba(20, 20, 20, 0.8);
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5), 0 0 15px rgba(255, 230, 0, 0.2);
+        }
+
+        .project-item h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .project-item p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.4;
+        }
+
+        /* Timeline */
+        .timeline {
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            padding-left: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            background: #ffe600;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffe600;
+        }
+
+        .timeline-item p {
+            margin-bottom: 5px;
+        }
+        
+        .year {
+            color: #ffe600;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Skills specific */
+        #skills .content-block::-webkit-scrollbar { width: 6px; }
+        #skills .content-block::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        #skills .content-block::-webkit-scrollbar-thumb { background: rgba(255,230,0,0.5); border-radius: 10px; }
+        
+        .skill-cat { margin-top: 15px; font-size: 0.95rem; color: #ffe600; text-align: left; margin-bottom: 5px; }
+        .skill-tag-sm { padding: 4px 10px; background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 30px; font-size: 0.75rem; transition: all 0.3s; white-space: nowrap; }
+        .skill-tag-sm:hover { border-color: #ffe600; color: #ffe600; box-shadow: 0 0 10px rgba(255, 230, 0, 0.4); }
+        .skills-sm { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+
+        @media (max-width: 900px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .section { padding: 0 5%; }
+            nav { padding: 20px; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .nav-links { gap: 15px; flex-wrap: wrap; justify-content: center; }
+            .align-right { align-items: flex-start; text-align: left; }
+            .skill-cat, .skills-sm { justify-content: flex-start; text-align: left; }
+            .content-block { padding: 25px; max-width: 100%; }
+            .clear-block { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Vasu.</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="animation-container">
+        <canvas id="scroll-canvas"></canvas>
+    </div>
+
+    <!-- 1. Home (Left) -->
+    <div id="home" class="section align-left">
+        <div class="clear-block">
+            <span class="badge">Software Engineer | AI & Cyber Security</span>
+            <h1 style="font-size: 3.5rem;">Lingamallu Vasu Deva Siva Sai Subbarao</h1>
+            <p>A motivated Computer Science student with strong foundations in programming, cyber security, and problem-solving. Building scalable systems and intelligent applications.</p>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <a href="#projects" class="btn">View Projects</a>
+                <a href="https://drive.google.com/file/d/1i_fmqOfkkDNmJjKS1whtC_YqNrYoud8x/view?usp=sharing" target="_blank" class="btn" style="background: transparent; color: #fff; border-color: #fff;">View Resume</a>
+            </div>
+            <div style="margin-top: 25px; display: flex; gap: 20px; font-size: 0.95rem;">
+                <a href="https://linkedin.com/in/vasu-lingamallu" target="_blank" style="color: #ccc; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#ffe600'" onmouseout="this.style.color='#ccc'">LinkedIn Profile ↗</a>
+                <a href="https://github.com/Vasulingamallu" target="_blank" style="color: #ccc; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#ffe600'" onmouseout="this.style.color='#ccc'">GitHub Profile ↗</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. About (Right) -->
+    <div id="about" class="section align-right">
+        <div class="content-block">
+            <h2>Objective</h2>
+            <p>I am seeking opportunities to apply technical knowledge and practical skills in real-world projects while continuously learning and contributing to organizational growth.</p>
+            <h3 style="color: #ffe600; margin-top: 25px; font-size: 1.1rem;">Achievements & Certifications</h3>
+            <ul style="padding-left: 20px; color: #ddd; font-size: 0.95rem; line-height: 1.6;">
+                <li><strong>Google Cyber Security Professional</strong> Certified</li>
+                <li><strong>Full Stack Development with Java</strong> Certified</li>
+                <li><strong>Campus Ambassador</strong> - GeeksforGeeks</li>
+                <li><strong>2x Hackathon Winner</strong> - Supraja Technologies</li>
+                <li><strong>Microsoft AI Tour</strong> Attendee</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 3. Experience (Left) -->
+    <div id="experience" class="section align-left">
+        <div class="content-block" style="max-width: 480px; max-height: 75vh; overflow-y: auto; padding-right: 20px;">
+            <style>
+                #experience .content-block::-webkit-scrollbar { width: 6px; }
+                #experience .content-block::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+                #experience .content-block::-webkit-scrollbar-thumb { background: rgba(255,230,0,0.5); border-radius: 10px; }
+            </style>
+            <h2>Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="year">Present</span>
+                    <h3 style="font-size: 1.1rem;">Co-Founder</h3>
+                    <p>RMVS Digital Solutions</p>
+                    <ul style="padding-left: 15px; font-size: 0.85rem; color: #aaa; line-height: 1.4; margin-top: 5px;">
+                        <li>Co-founded a digital solutions agency providing end-to-end IT services, custom software development, and technical consulting.</li>
+                        <li>Spearheading technical strategy and delivering scalable solutions to clients.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">Sep 2024 - Feb 2025</span>
+                    <h3 style="font-size: 1.1rem;">Intern VAPT</h3>
+                    <p>Supraja Technologies, Vijayawada</p>
+                    <ul style="padding-left: 15px; font-size: 0.85rem; color: #aaa; line-height: 1.4; margin-top: 5px;">
+                        <li>Performed VAPT to identify web vulnerabilities and business logic flaws using standard security tools.</li>
+                        <li>Prepared detailed vulnerability reports with impact analysis and recommended fixes.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">May 2025 - Jun 2025</span>
+                    <h3 style="font-size: 1.1rem;">Internship Java Full Stack</h3>
+                    <p>Data Valley, Narasaraopet</p>
+                    <ul style="padding-left: 15px; font-size: 0.85rem; color: #aaa; line-height: 1.4; margin-top: 5px;">
+                        <li>Completed a Java Full Stack with AI internship, gaining hands-on experience in developing end-to-end web applications.</li>
+                        <li>Worked on real-world projects using Spring Boot, developing RESTful APIs and implementing backend business logic.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Education (Right) -->
+    <div id="education" class="section align-right">
+        <div class="content-block">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="year">2022 - 2026</span>
+                    <h3 style="font-size: 1.1rem;">B.Tech CSE - Cyber Security</h3>
+                    <p>Narasaraopeta Engineering College</p>
+                    <p style="font-size: 0.85rem; color: #aaa;">CGPA: 8.19</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2020 - 2022</span>
+                    <h3 style="font-size: 1.1rem;">Intermediate Education</h3>
+                    <p>Narayana Junior College, AP</p>
+                    <p style="font-size: 0.85rem; color: #aaa;">Percentage: 72%</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2020</span>
+                    <h3 style="font-size: 1.1rem;">Secondary Education</h3>
+                    <p>AP Model School, AP</p>
+                    <p style="font-size: 0.85rem; color: #aaa;">CGPA: 9.8</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Skills (Left) -->
+    <div id="skills" class="section align-left">
+        <div class="content-block" style="max-height: 70vh; overflow-y: auto; padding-right: 20px;">
+            <h2>Technical Skills</h2>
+            
+            <h3 class="skill-cat">Languages</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">Python</span><span class="skill-tag-sm">Java</span><span class="skill-tag-sm">JavaScript</span><span class="skill-tag-sm">SQL</span><span class="skill-tag-sm">HTML5</span><span class="skill-tag-sm">CSS3</span><span class="skill-tag-sm">C</span>
+            </div>
+
+            <h3 class="skill-cat">Web Development</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">Spring Boot</span><span class="skill-tag-sm">Spring Security</span><span class="skill-tag-sm">Hibernate</span><span class="skill-tag-sm">Flask</span><span class="skill-tag-sm">React.js</span><span class="skill-tag-sm">Thymeleaf</span><span class="skill-tag-sm">REST APIs</span><span class="skill-tag-sm">Axios</span>
+            </div>
+
+            <h3 class="skill-cat">Cybersecurity & VAPT</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">Network Security</span><span class="skill-tag-sm">Ethical Hacking</span><span class="skill-tag-sm">Anomaly Detection</span><span class="skill-tag-sm">Nmap</span><span class="skill-tag-sm">Wireshark</span><span class="skill-tag-sm">Kali Linux</span><span class="skill-tag-sm">Metasploit</span><span class="skill-tag-sm">Aircrack-ng</span><span class="skill-tag-sm">SQLMap</span><span class="skill-tag-sm">John the Ripper</span><span class="skill-tag-sm">Acunetix</span><span class="skill-tag-sm">Nessus</span>
+            </div>
+
+            <h3 class="skill-cat">AI & Machine Learning</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">Machine Learning</span><span class="skill-tag-sm">Scikit-learn</span><span class="skill-tag-sm">TensorFlow</span><span class="skill-tag-sm">OpenCV</span><span class="skill-tag-sm">Face Recognition</span><span class="skill-tag-sm">Random Forest</span><span class="skill-tag-sm">SVM</span><span class="skill-tag-sm">XGBoost</span><span class="skill-tag-sm">LSTM</span><span class="skill-tag-sm">SMOTE</span><span class="skill-tag-sm">Computer Vision</span><span class="skill-tag-sm">Explainable AI</span>
+            </div>
+
+            <h3 class="skill-cat">Cloud & DevOps</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">AWS (EC2, S3, IAM)</span><span class="skill-tag-sm">Azure</span><span class="skill-tag-sm">Docker</span><span class="skill-tag-sm">Git / GitHub</span><span class="skill-tag-sm">CI/CD</span><span class="skill-tag-sm">Linux</span>
+            </div>
+
+            <h3 class="skill-cat">Databases</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">MySQL</span><span class="skill-tag-sm">MongoDB</span><span class="skill-tag-sm">PostgreSQL</span><span class="skill-tag-sm">SQLite</span>
+            </div>
+            
+            <h3 class="skill-cat">Tools & Soft Skills</h3>
+            <div class="skills-sm">
+                <span class="skill-tag-sm">Eclipse</span><span class="skill-tag-sm">Postman</span><span class="skill-tag-sm">STS</span><span class="skill-tag-sm">Maven</span><span class="skill-tag-sm">VS Code</span><span class="skill-tag-sm">Jupyter</span><span class="skill-tag-sm">Problem Solving</span><span class="skill-tag-sm">Team Collaboration</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Projects (Right) -->
+    <div id="projects" class="section align-right">
+        <div class="content-block" style="max-height: 75vh; overflow-y: auto; padding-right: 20px;">
+            <style>
+                #projects .content-block::-webkit-scrollbar { width: 6px; }
+                #projects .content-block::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+                #projects .content-block::-webkit-scrollbar-thumb { background: rgba(255,230,0,0.5); border-radius: 10px; }
+            </style>
+            <h2>Personal Projects</h2>
+            <div class="projects-list">
+                <div class="project-item">
+                    <h4>ML Network Anomaly Detection</h4>
+                    <p style="color: #ffe600; font-size: 0.8rem; margin-bottom: 5px;">Python, Random Forest, Explainable AI, Tkinter</p>
+                    <p style="margin-bottom: 10px;">System to classify network traffic as normal/anomalous using Random Forest. Features a GUI for dataset upload, visualization, and report generation. Achieved 96.4% accuracy and 0.97 AUC on CICIDS2017, processing 1k records in < 2s.</p>
+                    <a href="https://github.com/CSE-ET/CSE-CS--BATCH-12.git" target="_blank" style="color: #ffe600; font-size: 0.85rem; text-decoration: none; font-weight: 600;">View on GitHub ↗</a>
+                </div>
+                <div class="project-item">
+                    <h4>Advanced Port Scanner</h4>
+                    <p style="color: #ffe600; font-size: 0.8rem; margin-bottom: 5px;">Python, Tkinter, Sockets, Multithreading, SMTP</p>
+                    <p style="margin-bottom: 10px;">GUI-based Python application for port scanning and email-based alert delivery. Achieved faster scan performance and enhanced network security visibility using real-time scanning and automated reporting.</p>
+                    <a href="https://github.com/Vasulingamallu/ADVANCE-PORT-SCANNER.git" target="_blank" style="color: #ffe600; font-size: 0.85rem; text-decoration: none; font-weight: 600;">View on GitHub ↗</a>
+                </div>
+                <div class="project-item">
+                    <h4>Malicious URL Detection</h4>
+                    <p style="color: #ffe600; font-size: 0.8rem; margin-bottom: 5px;">Python, Pandas, Scikit-learn, SVM, XGBoost</p>
+                    <p style="margin-bottom: 10px;">Machine learning-based URL classification system to detect malicious URLs. Achieved accurate detection by extracting lexical features, training multiple ML models, and evaluating accuracy metrics.</p>
+                    <a href="https://github.com/Vasulingamallu/Aiml-for-network-malicious-url-detection-intel-unnati-project.git" target="_blank" style="color: #ffe600; font-size: 0.85rem; text-decoration: none; font-weight: 600;">View on GitHub ↗</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Contact (Left) -->
+    <div id="contact" class="section align-left">
+        <div class="clear-block" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+            <h2>Get In Touch</h2>
+            <p style="color: #fff; font-size: 1.1rem; max-width: 450px;">I am actively seeking opportunities to apply my technical knowledge in real-world projects. Let's connect!</p>
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 2; margin-bottom: 25px;">
+                <li>📞 +91-7093055682</li>
+                <li>✉️ <a href="mailto:lingamalluvasu@gmail.com" style="color: #ffe600; text-decoration: none; text-shadow: none;">lingamalluvasu@gmail.com</a></li>
+                <li>🔗 <a href="https://linkedin.com/in/vasu-lingamallu" target="_blank" style="color: #ffe600; text-decoration: none; text-shadow: none;">LinkedIn Profile</a></li>
+                <li>💻 <a href="https://github.com/Vasulingamallu" target="_blank" style="color: #ffe600; text-decoration: none; text-shadow: none;">GitHub Profile</a></li>
+            </ul>
+            <a href="mailto:lingamalluvasu@gmail.com" class="btn">Send an Email</a>
+        </div>
+    </div>
+
+    <script>
+        const html = document.documentElement;
+        const canvas = document.getElementById("scroll-canvas");
+        const context = canvas.getContext("2d");
+
+        const frameCount = 300;
+        const currentFrame = index => (
+            `ezgif-2fd552b42632a202-jpg/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
+        );
+
+        const images = [];
+        
+        // Preload images
+        for (let i = 1; i <= frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        // Draw first frame when loaded
+        images[0].onload = function() {
+            canvas.width = images[0].width;
+            canvas.height = images[0].height;
+            context.drawImage(images[0], 0, 0);
+        }
+
+        let targetFrame = 0;
+        let currentFrameIndex = 0;
+
+        // Calculate target frame on scroll
+        window.addEventListener('scroll', () => {  
+            const scrollTop = html.scrollTop;
+            const maxScrollTop = html.scrollHeight - window.innerHeight;
+            
+            if (maxScrollTop > 0) {
+                const scrollFraction = scrollTop / maxScrollTop;
+                targetFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
+            }
+        });
+        
+        // Use requestAnimationFrame for smooth interpolation and rendering
+        const render = () => {
+            currentFrameIndex += (targetFrame - currentFrameIndex) * 0.1;
+            const frameToDraw = Math.round(currentFrameIndex);
+            
+            if (images[frameToDraw] && images[frameToDraw].complete && images[frameToDraw].width > 0) {
+                if (canvas.width !== images[frameToDraw].width) {
+                    canvas.width = images[frameToDraw].width;
+                    canvas.height = images[frameToDraw].height;
+                }
+                context.drawImage(images[frameToDraw], 0, 0);
+            }
+            requestAnimationFrame(render);
+        };
+        
+        requestAnimationFrame(render);
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
